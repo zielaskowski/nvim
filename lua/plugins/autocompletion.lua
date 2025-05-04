@@ -80,7 +80,6 @@ return { -- Autocompletion
         lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
       },
     },
-
     snippets = { preset = 'luasnip' },
 
     -- Blink.cmp includes an optional, recommended rust fuzzy matcher,
@@ -91,6 +90,7 @@ return { -- Autocompletion
     --
     -- See :h blink-cmp-config-fuzzy for more information
     fuzzy = { implementation = 'lua' },
+    -- fuzzy = { implementation = 'prefer_rust_with_warning'},
 
     -- Shows a signature help window while you type arguments for a function
     signature = { enabled = true },

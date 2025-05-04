@@ -1,12 +1,29 @@
-return {
+local function update_python_path()
+-- pylint do not recognize active venv.
+-- set PYTHONPATH to current venv so pylint see modules
+  local venv = vim.env.VIRTUAL_ENV
+  if venv then
+    -- Try to find the site-packages path inside the venv
+    local handle = io.popen('find ' .. venv .. "/lib -type d -name 'site-packages'")
+    if handle then
+      local site_packages = handle:read('*a'):gsub('%s+$', '')
+      handle:close()
+      if site_packages ~= '' then
+        vim.env.PYTHONPATH = site_packages
+      end
+    end
+  end
+end
 
+return {
   { -- Linting
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
       local lint = require 'lint'
       lint.linters_by_ft = {
-        markdown = { 'markdownlint' },
+        markdown = { 'vale' },
+        python = { 'pylint' },
       }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
@@ -50,6 +67,7 @@ return {
           -- Only run the linter in buffers that you can modify in order to
           -- avoid superfluous noise, notably within the handy LSP pop-ups that
           -- describe the hovered symbol using Markdown.
+	  update_python_path()
           if vim.opt_local.modifiable:get() then
             lint.try_lint()
           end

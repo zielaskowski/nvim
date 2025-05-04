@@ -29,13 +29,24 @@ config sit in ~config/nvim like this
     │       └── themes
     │           └── my_dashboard.lua
 ```
-## LSP
+## LSP *nvim-lspconfig*
+
+Language Server Protocol, where all "inteligence tool" sit.
+
+| language | server     | type chk. | linter    |
+|:---------|:-----------|:----------|:----------|
+| python   | pyright    | pyright   | pylint    |
+| lua      | lua-ls     | lazydev   |           |
+
+### helpers
+- mason.nvim - install dependecies, like LSP servers (pyright, lua-ls). Check with `:mason`
+
+### autocompletion *blink.cmp*
+
+- blink.cmp
 
 
-## python IDE
-
-### autocompletion
-
+### linting `nvim-lint`
 
 ## addons plugin
 

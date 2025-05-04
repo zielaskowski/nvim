@@ -19,8 +19,11 @@ end
 map('<C-p>', vim.cmd.Ex, 'file Explore')
 
 -- Move selection
-map('<A-k>', ":m '<-2<CR>gv=gv", 'Move selection up')
-map('<A-j>', ":m '>+1<CR>gv=gv", 'Move selection down')
+map('<A-k>', ":m '<-2<CR>gv=gv", 'Move selection up', 'v')
+map('<A-j>', ":m '>+1<CR>gv=gv", 'Move selection down', 'v')
+-- Move line under cursor
+map('<A-j>', ":m '<-2<CR>", 'Move line under cursor up')
+map('<A-k>', ":m '>+1<CR>", 'Move line under cursor down')
 
 -- indentation of visual selection
 map('<Tab>', '>gv', 'indent by 1 Tab the selection', 'v')
@@ -88,9 +91,11 @@ local switch_char = function(c)
     suffix = '<Esc>p`[v`]'
     char_left, char_right = bonds_v_mode()
   end
+
   if char_left == nil or char_right == nil then
     return
   end
+
   if (not char_in_list(char_left, 1)) and (not char_in_list(char_right, 2)) then
     -- no char, insert first char
     -- in normal mode: ciw''<Left><Esc>p

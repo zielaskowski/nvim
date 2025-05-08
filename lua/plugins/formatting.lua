@@ -29,10 +29,13 @@ return { -- Autoformat
       end
     end,
     formatters_by_ft = {
+      -- :help conform-formatters to see other formatters
       lua = { 'stylua' },
       -- Conform can also run multiple formatters sequentially
       python = { 'isort', 'black' },
-      --
+      cpp = { 'clang-format' },
+      sh = { 'beautysh' },
+      zsh = { 'beautysh' },
       -- You can use 'stop_after_first' to run the first available formatter from the list
       -- javascript = { "prettierd", "prettier", stop_after_first = true },
     },

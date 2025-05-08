@@ -24,7 +24,7 @@ return {
       lint.linters_by_ft = {
         markdown = { 'markdownlint' },
         python = { 'pylint' },
-        bash = { 'shellcheck' },
+        sh = { 'shellcheck' },
 	zsh = {'shellcheck'},
       }
 

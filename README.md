@@ -52,6 +52,7 @@ Language Server Protocol, where all "inteligence tool" sit.
 | **bash**      |               |           | ShellCheck    |           |
 | **zsh**       |               |           | ShellCheck    |           |
 | **css**       |   css-lsp     |           |               |           |
+| **cpp**       |   clangd      |           | clangd        |           |
 
 ### helpers
 

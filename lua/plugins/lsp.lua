@@ -179,6 +179,7 @@ return {
       local servers = {
         pyright = {},
         cssls = {},
+	clangd={},
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -208,6 +209,8 @@ return {
         'pylint',
         'markdownlint',
         'css-lsp',
+	'beautysh',
+	'clangd',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

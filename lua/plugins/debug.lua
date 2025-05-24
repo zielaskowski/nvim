@@ -1,11 +1,7 @@
--- debug.lua
+-- DAP plugin to debug your code.
+-- make sure lint is runing, becouse PYTHONPATH is set there
 --
--- Shows how to use the DAP plugin to debug your code.
 --
--- Primarily focused on configuring the debugger for Go, but can
--- be extended to other languages as well. That's why it's called
--- kickstart.nvim and not kitchen-sink.nvim ;)
-
 return {
   'mfussenegger/nvim-dap',
   dependencies = {
@@ -20,7 +16,6 @@ return {
     'jay-babu/mason-nvim-dap.nvim',
 
     -- Add your own debuggers here
-    'leoluz/nvim-dap-go',
     'mfussenegger/nvim-dap-python',
   },
   keys = {
@@ -138,5 +133,7 @@ return {
     -- python config
     local py_path = os.getenv 'VIRTUAL_ENV' .. '/bin/python'
     require('dap-python').setup(py_path)
+    -- vscode extensions to read launch.json
+    require('dap.ext.vscode').load_launchjs(nil, { python = { 'python' } })
   end,
 }

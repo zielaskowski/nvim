@@ -1,5 +1,15 @@
 # NVIM configuration
 
+## before start
+
+for coverting to pdf use pandoc. `~/.pdf_style.css` makes formatting.
+
+```bash
+ls README.md | entr zsh -c "source ~/.zshrc && pandoc_pdf README.md README.pdf"
+or
+pandoc README.md -o README.pdf --pdf-engine=weasyprint --css=/home/mi/.pdf_style.css
+```
+
 ## Introduction
 
 Started from Kickstart.nvim configuration: <https://github.com/nvim-lua/kickstart.nvim>
@@ -65,12 +75,22 @@ Check with `:Mason`
 
 ### linting `nvim-lint`
 
+#### python
+
+Add virtual env location (see: `update_python_path()` in lint.lua).
+Executed as autocommand when starting linting.
+
 ### debuging
 
 - nvim-dap
 
-- dap-python, require debugpy available in venv and path to python
-inside venv. Use VIRTUAL_ENV shell variable to know path to venv
+#### dap-python
+
+Require `debugpy` available in venv and path to python (see linting/python).
+
+Use `dap.ext.vscode` to read `launch.json`, by default in .vscode folder.
+NVIM json parser is very strict, so probably you need to remove
+commas at end of keys.
 
 ## addons plugin
 

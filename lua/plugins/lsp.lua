@@ -211,6 +211,7 @@ return {
         'css-lsp',
 	'beautysh',
 	'clangd',
+	'jsonlint',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

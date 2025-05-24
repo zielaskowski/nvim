@@ -9,7 +9,9 @@ local function update_python_path()
       local site_packages = handle:read('*a'):gsub('%s+$', '')
       handle:close()
       if site_packages ~= '' then
-        vim.env.PYTHONPATH = site_packages
+        local module_dir = vim.fn.fnamemodify(venv, ':h')
+        local new_pythonpath = module_dir .. ':' .. site_packages
+        vim.env.PYTHONPATH = new_pythonpath
       end
     end
   end
@@ -25,7 +27,8 @@ return {
         markdown = { 'markdownlint' },
         python = { 'pylint' },
         sh = { 'shellcheck' },
-	zsh = {'shellcheck'},
+        zsh = { 'shellcheck' },
+        json = { 'jsonlint' },
       }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,

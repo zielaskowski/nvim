@@ -1,7 +1,5 @@
 -- DAP plugin to debug your code.
 -- make sure lint is runing, becouse PYTHONPATH is set there
---
---
 return {
   'mfussenegger/nvim-dap',
   dependencies = {
@@ -134,6 +132,25 @@ return {
     local py_path = os.getenv 'VIRTUAL_ENV' .. '/bin/python'
     require('dap-python').setup(py_path)
     -- vscode extensions to read launch.json
-    require('dap.ext.vscode').load_launchjs(nil, { python = { 'python' } })
+    local vscode = require 'dap.ext.vscode'
+    vscode.load_launchjs(nil, { python = { 'python' } })
+    -- replace ${command:pickArgs} with argumnets
+    local function pick_arg()
+      local input = vim.fn.input 'Arguments: '
+      return vim.fn.split(input, ' ')
+    end
+
+    local config = vscode.getconfigs()
+    for _, con in pairs(config) do
+      if con.args then
+        for _, arg in ipairs(con.args) do
+          if arg == '${command:pickArgs}' then
+            con.args = pick_arg
+            break
+          end
+        end
+      end
+      table.insert(dap.configurations.python, con)
+    end
   end,
 }

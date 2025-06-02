@@ -2,7 +2,7 @@
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
---  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+-- NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -15,6 +15,9 @@ local map = function(keys, func, desc, mode)
   end
 end
 
+-- copy again after Paste, so multiple past is possible
+map('p', 'pgvy', 'Copy again pasted text', 'v')
+
 -- Netrw (default Vim file  explorer)
 map('<C-p>', vim.cmd.Ex, 'file Explore')
 
@@ -22,8 +25,8 @@ map('<C-p>', vim.cmd.Ex, 'file Explore')
 map('<A-k>', ":m '<-2<CR>gv=gv", 'Move selection up', 'v')
 map('<A-j>', ":m '>+1<CR>gv=gv", 'Move selection down', 'v')
 -- Move line under cursor
-map('<A-j>', ":m '<-2<CR>", 'Move line under cursor up')
-map('<A-k>', ":m '>+1<CR>", 'Move line under cursor down')
+map('<A-k>', ":m '<-2<CR>", 'Move line under cursor up')
+map('<A-j>', ":m '>+1<CR>", 'Move line under cursor down')
 
 -- indentation of visual selection
 map('<Tab>', '>gv', 'indent by 1 Tab the selection', 'v')
@@ -126,6 +129,6 @@ end
 map("'", function()
   return switch_char { "''", '""' }
 end, { expr = true, desc = 'add quote to the word or selection' }, { 'v', 'n' })
-map('9', function()
+map('<A-p>', function()
   return switch_char { '()', '{}', '[]', '<>' }
-end, { expr = true, desc = 'add quote to the word or selection' }, { 'v', 'n' })
+end, { expr = true, desc = 'add parenthesis to the word or selection' }, { 'v', 'n' })

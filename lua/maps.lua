@@ -15,6 +15,13 @@ local map = function(keys, func, desc, mode)
   end
 end
 
+-- esc before functional keys binding in insert mode
+-- i always forget to enter normal mode which is frustrating
+map('<F1>','<Esc><F1>','Esceping before debug func keybindings','i')
+map('<F2>','<Esc><F2>','Esceping before debug func keybindings','i')
+map('<F5>','<Esc><F5>','Esceping before debug func keybindings','i')
+map('<F10>','<Esc><F10>','Esceping before debug func keybindings','i')
+
 -- copy again after Paste, so multiple past is possible
 map('p', 'pgvy', 'Copy again pasted text', 'v')
 

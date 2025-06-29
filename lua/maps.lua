@@ -17,10 +17,10 @@ end
 
 -- esc before functional keys binding in insert mode
 -- i always forget to enter normal mode which is frustrating
-map('<F1>','<Esc><F1>','Esceping before debug func keybindings','i')
-map('<F2>','<Esc><F2>','Esceping before debug func keybindings','i')
-map('<F5>','<Esc><F5>','Esceping before debug func keybindings','i')
-map('<F10>','<Esc><F10>','Esceping before debug func keybindings','i')
+map('<F1>', '<Esc><F1>', 'Esceping before debug func keybindings', 'i')
+map('<F2>', '<Esc><F2>', 'Esceping before debug func keybindings', 'i')
+map('<F5>', '<Esc><F5>', 'Esceping before debug func keybindings', 'i')
+map('<F10>', '<Esc><F10>', 'Esceping before debug func keybindings', 'i')
 
 -- copy again after Paste, so multiple past is possible
 map('p', 'pgvy', 'Copy again pasted text', 'v')
@@ -139,3 +139,64 @@ end, { expr = true, desc = 'add quote to the word or selection' }, { 'v', 'n' })
 map('<A-p>', function()
   return switch_char { '()', '{}', '[]', '<>' }
 end, { expr = true, desc = 'add parenthesis to the word or selection' }, { 'v', 'n' })
+
+local function display_DataFrame()
+  -- during python debuging with DAP and debugpy
+  -- display DataFrame under the cursor
+  -- print(df.to_string())
+  -- in floating window
+
+  -- checl if DAP session
+  local dap = require 'dap'
+  if not dap.session() then
+    vim.notify('DAP session must be active', vim.log.levels.WARN)
+    return
+  end
+
+  local dataframe = vim.fn.expand '<cword>'
+  if not dataframe or dataframe == '' then
+    vim.notify('No DataFrame under the cursor', vim.log.levels.WARN)
+  end
+
+  local expr =  dataframe .. '.to_string()'
+  -- current session ID
+  local frame = dap.session().current_frame
+  if not frame then
+  	vim.notify("No current frame",vim.log.levels.ERROR)
+	return
+  end
+  -- DAP session
+  dap.session():request('evaluate',
+  {
+	  expression = expr,
+	  context = 'repl',
+	  frameId = frame.id
+  }, function(err, resp)
+    if err then
+      vim.notify('DAP eval error: ' .. err.message, vim.log.levels.ERROR)
+      return
+    end
+    -- split results into lines
+    local lines = vim.split(resp.result or '', '\\n',{plain=true})
+    -- create buffer
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+    -- calculate win size
+    local width = vim.o.columns - 4
+    local height = math.min(#lines+2, vim.o.lines - 4)
+    -- display win
+    local win = vim.api.nvim_open_win(buf, true, {
+      relative = 'editor',
+      width = width,
+      height = height,
+      row = 2,
+      col = 2,
+      style = 'minimal',
+      border = 'rounded',
+    })
+    -- do not wrap text
+    vim.api.nvim_set_option_value('wrap', false, {win=win})
+  end)
+end
+
+map('<leader>df', display_DataFrame, 'dispalay DataFrame during python debug session (DAP)')

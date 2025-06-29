@@ -1,4 +1,24 @@
 -- LSP Plugins
+
+local function open_vsplit()
+  -- function to open current buffer in other (vertical split window)
+  -- used to open function refrence keeping current panel visible
+  local curr_buff = vim.api.nvim_get_current_buf()
+  local curr_win = vim.fn.winnr() 	-- number of current window
+  local right_win = vim.fn.winnr 'l' 	-- number of window on right
+  local right_win_id = vim.fn.win_getid(right_win) -- nvim api require id, not nr :(
+  local curr_pos = vim.api.nvim_win_get_cursor(0) -- get cursor position for current win
+
+  if curr_win == right_win then 	-- there is no window on right
+    vim.cmd 'vsplit' 			-- create new, automatically will
+    					-- jump there with current buff
+  else
+    vim.api.nvim_set_current_win(right_win_id) -- select right window
+    vim.cmd('buffer ' .. curr_buff)
+    vim.api.nvim_win_set_cursor(0, curr_pos)
+  end
+end
+
 return {
   {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
@@ -63,9 +83,13 @@ return {
           --  To jump back, press <C-t>.
           map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
           map('grs', function()
-		  vim.cmd('split')
-		  require('telescope.builtin').lsp_definitions()
-		  end, '[G]oto [D]efinition in split window')
+            vim.cmd 'split'
+            require('telescope.builtin').lsp_definitions()
+          end, '[G]oto [D]efinition in split window')
+          map('grv', function()
+            open_vsplit()
+            require('telescope.builtin').lsp_definitions()
+          end, '[G]oto [D]efinition in split window')
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
@@ -183,7 +207,7 @@ return {
       local servers = {
         pyright = {},
         cssls = {},
-	clangd={},
+        clangd = {},
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -213,9 +237,9 @@ return {
         'pylint',
         'markdownlint',
         'css-lsp',
-	'beautysh',
-	'clangd',
-	'jsonlint',
+        'beautysh',
+        'clangd',
+        'jsonlint',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

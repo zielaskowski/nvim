@@ -207,7 +207,7 @@ return {
       local servers = {
         pyright = {},
         cssls = {},
-        clangd = {},
+        clangd = {cmd = {"clangd", "--header-insertion=never"}},
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -240,6 +240,7 @@ return {
         'beautysh',
         'clangd',
         'jsonlint',
+	'taplo',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

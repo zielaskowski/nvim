@@ -199,4 +199,4 @@ local function display_DataFrame()
   end)
 end
 
-map('<leader>df', display_DataFrame, 'dispalay DataFrame during python debug session (DAP)')
+map('<leader>df', display_DataFrame, 'Debug: dispalay DataFrame')

@@ -4,14 +4,14 @@ local function open_vsplit()
   -- function to open current buffer in other (vertical split window)
   -- used to open function refrence keeping current panel visible
   local curr_buff = vim.api.nvim_get_current_buf()
-  local curr_win = vim.fn.winnr() 	-- number of current window
-  local right_win = vim.fn.winnr 'l' 	-- number of window on right
+  local curr_win = vim.fn.winnr() -- number of current window
+  local right_win = vim.fn.winnr 'l' -- number of window on right
   local right_win_id = vim.fn.win_getid(right_win) -- nvim api require id, not nr :(
   local curr_pos = vim.api.nvim_win_get_cursor(0) -- get cursor position for current win
 
-  if curr_win == right_win then 	-- there is no window on right
-    vim.cmd 'vsplit' 			-- create new, automatically will
-    					-- jump there with current buff
+  if curr_win == right_win then -- there is no window on right
+    vim.cmd 'vsplit' -- create new, automatically will
+    -- jump there with current buff
   else
     vim.api.nvim_set_current_win(right_win_id) -- select right window
     vim.cmd('buffer ' .. curr_buff)
@@ -205,10 +205,10 @@ return {
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-	ts_ls= {},
+        ts_ls = {},
         pyright = {},
         cssls = {},
-        clangd = {cmd = {"clangd", "--header-insertion=never"}},
+        clangd = { cmd = { 'clangd', '--header-insertion=never', '--enable-config' } },
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -241,7 +241,7 @@ return {
         'beautysh',
         'clangd',
         'jsonlint',
-	'taplo',
+        'taplo',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -259,7 +259,9 @@ return {
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
+            --require('lspconfig')[server_name].setup(server)
+            vim.lsp.config(server_name, server)
+            vim.lsp.enable(server_name)
           end,
         },
       }

@@ -15,6 +15,10 @@ local map = function(keys, func, desc, mode)
   end
 end
 
+-- style format of floating windows so more distinct from background
+vim.api.nvim_set_hl(0,'NormalFloat',{bg = '#070e78',fg='white'})
+
+
 -- esc before functional keys binding in insert mode
 -- i always forget to enter normal mode which is frustrating
 map('<F1>', '<Esc><F1>', 'Esceping before debug func keybindings', 'i')
@@ -39,14 +43,14 @@ map('<A-j>', ":m '>+1<CR>", 'Move line under cursor down')
 map('<Tab>', '>gv', 'indent by 1 Tab the selection', 'v')
 map('<S-Tab>', '<gv', 'un-indent by 1 Tab the selection', 'v')
 
--- find char before and aftter word under cursor
+-- find char before and after word under cursor
 local bonds_n_mode = function()
   local line = vim.fn.getline '.' -- get string of current line
   local col = vim.fn.col '.' -- get cursor position (column)
 
-  -- find bounderis of 'word' under cursor. word is defined as alphanumerc_ (included underscore)
+  -- find boundaries of 'word' under cursor. Word is defined as alphanumeric_ (included underscore)
   local char_left_pos = line:sub(1, col):find '[%w_]+$' -- find word at end of string
-  local _, char_right_pos = line:sub(col, -1):find '^[%w_]+' -- find word from begining  of string
+  local _, char_right_pos = line:sub(col, -1):find '^[%w_]+' -- find word from beginning  of string
 
   if char_left_pos == nil or char_right_pos == nil then
     return
@@ -57,11 +61,11 @@ local bonds_n_mode = function()
   return char_left, char_right
 end
 
--- find char at begining and end of selection
+-- find char at beginning and end of selection
 local bonds_v_mode = function()
-  -- refresh marks so below cmds actualy work
+  -- refresh marks so below cmds actually work
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'x', true)
-  local sel_left = vim.fn.getpos "'<" -- retrun table {bufnum, lnum, col, off}
+  local sel_left = vim.fn.getpos "'<" -- return table {bufnum, lnum, col, off}
   local sel_right = vim.fn.getpos "'>"
 
   local line_start = vim.fn.getline(sel_left[2])
@@ -141,12 +145,12 @@ map('<A-p>', function()
 end, { expr = true, desc = 'add parenthesis to the word or selection' }, { 'v', 'n' })
 
 local function display_DataFrame()
-  -- during python debuging with DAP and debugpy
+  -- during python debugging with DAP and debugpy
   -- display DataFrame under the cursor
   -- print(df.to_string())
   -- in floating window
 
-  -- checl if DAP session
+  -- check if DAP session
   local dap = require 'dap'
   if not dap.session() then
     vim.notify('DAP session must be active', vim.log.levels.WARN)

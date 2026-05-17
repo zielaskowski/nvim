@@ -14,9 +14,10 @@ o.mouse = 'a' -- Enable mouse mode, in all modes
 o.showmode = false -- If in Insert, Replace or Visual mode put a message on the last line.
 			-- Don't show the mode, since it's already in the status line
 o.scrolloff = 10 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.confirm = true -- raise a dialog asking if you wish to save the current file(s)
-vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}" -- code context on top bar
-
+o.confirm = true -- raise a dialog asking if you wish to save the current file(s)
+o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}" -- code context on top bar
+o.spell = true -- spell checking
+o.spelllang = 'en_us'
 
 -- Highlight when yanking (copying) text
 -- See `:help vim.highlight.on_yank()`

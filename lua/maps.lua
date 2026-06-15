@@ -16,8 +16,10 @@ local map = function(keys, func, desc, mode)
 end
 
 -- style format of floating windows so more distinct from background
-vim.api.nvim_set_hl(0,'NormalFloat',{bg = '#070e78',fg='white'})
-
+local hover_buf = function()
+	vim.lsp.buf.hover {border="rounded"}
+end
+map('K',hover_buf, 'vim.lsp.buf.hover()')
 
 -- esc before functional keys binding in insert mode
 -- i always forget to enter normal mode which is frustrating

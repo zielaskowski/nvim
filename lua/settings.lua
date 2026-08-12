@@ -50,6 +50,8 @@ vim.opt.breakindent = true
 -- Save undo history
 vim.opt.undofile = true
 
+-- Auto save
+vim.api.nvim_create_autocmd({"InsertLeave"},{command = "silent! update"})
 
 -- Keep signcolumn on by default
 vim.opt.signcolumn = 'yes'
@@ -67,6 +69,7 @@ vim.opt.splitbelow = true
 --  and `:help 'listchars'`
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.tabstop = 4
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'

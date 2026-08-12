@@ -13,7 +13,7 @@ return { -- Autoformat
     },
   },
   opts = {
-    notify_on_error = false,
+    notify_on_error = true,
     format_on_save = function(bufnr)
       -- Disable "format_on_save lsp_fallback" for languages that don't
       -- have a well standardized coding style. You can add additional
@@ -38,11 +38,13 @@ return { -- Autoformat
       zsh = { 'beautysh' },
       toml = { 'taplo' },
       -- You can use 'stop_after_first' to run the first available formatter from the list
-      javascript = { 'prettier', 'prettierd', stop_after_first = true },
+      javascript = { 'prettierd' },
+      json = { 'jq' },
       html = { 'prettier' },
     },
     formatters = {
       isort = { args = { '--profile', 'black', '--line-length', '88', '-' } },
+      prettier = { command = 'prettier',append_args = { '--print-width', '300', '--use-tabs', 'true','--tab-width','4','--bracket-same-line','true' } },
     },
   },
 }

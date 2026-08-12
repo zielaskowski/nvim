@@ -146,16 +146,16 @@ return {
     -- python config
     local py_path = os.getenv 'VIRTUAL_ENV' .. '/bin/python'
     require('dap-python').setup(py_path)
-    -- vscode extensions to read launch.json
-    local vscode = require 'dap.ext.vscode'
-    vscode.load_launchjs(nil, { python = { 'python' } })
-    -- replace ${command:pickArgs} with argumnets
+    -- replace ${command:pickArgs} with arguments
     local function pick_arg()
       local input = vim.fn.input 'Arguments: '
       return vim.fn.split(input, ' ')
     end
 
+    -- vscode extensions to read launch.json
+    local vscode = require 'dap.ext.vscode'
     local config = vscode.getconfigs()
+--    dap.configurations.python = nil
     for _, con in pairs(config) do
       if con.args then
         for _, arg in ipairs(con.args) do
